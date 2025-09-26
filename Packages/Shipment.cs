@@ -21,12 +21,17 @@
             var total = 0m;
             foreach (var category in Enum.GetValues(typeof(PackageCategory)))
             {
+                //total = 0m;
+                //foreach (var ipackage in Packages.Where(p => (p as Package)?.Category == (PackageCategory)category))
+                //{
+                //    var package = ipackage as Package;
+                //    total += package?.Cost ?? 0m;
+                //}
+                //from the above loop to the below LINQ expression!!!
+
+                //I could rip out total, but this LINQ expression is long enough as it is!!!
                 total = 0m;
-                foreach (var ipackage in Packages.Where(p => (p as Package)?.Category == (PackageCategory)category))
-                {
-                    var package = ipackage as Package;
-                    total += package?.Cost ?? 0m;
-                }
+                total = Packages.Where(p => (p as Package)?.Category == (PackageCategory)category).Sum(p => (p as Package)?.Cost ?? 0m);
                 result.Add((category?.ToString() ?? string.Empty, total));
             }
 
@@ -38,14 +43,15 @@
             var result = new List<(string, decimal)>();
             foreach (var packageGroup in Packages.GroupBy(p => p.Name))
             {
-                var totalCost = 0m;
-                foreach (var ipackage in packageGroup)
-                {
-                    var pacakge = ipackage as Package;
-                    totalCost += pacakge?.Cost ?? 0m;
-                }
+                //var totalCost = 0m;
+                //foreach (var ipackage in packageGroup)
+                //{
+                //    var pacakge = ipackage as Package;
+                //    totalCost += pacakge?.Cost ?? 0m;
+                //}
+                //from the above loop to the below LINQ expression!!!
 
-                result.Add((packageGroup.Key, totalCost));
+                result.Add((packageGroup.Key, packageGroup.Sum(p => (p as Package)?.Cost ?? 0m)));
             }
 
             return result;
